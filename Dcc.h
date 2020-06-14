@@ -11,6 +11,7 @@ class Dcc
     Dcc(uint8_t _OutputA, uint8_t _OutputB);
     void begin();
 
+    size_t set(uint8_t address, uint8_t Direction, uint8_t speed);
     size_t set(uint8_t address, uint8_t data);
     void Send();
     void SendAll();
@@ -20,15 +21,17 @@ class Dcc
 
     uint8_t OutputA;
     uint8_t OutputB;
-    uint8_t OutputABitMask;
-    uint8_t OutputBBitMask;
 
     #if defined(ESP8266) || defined(ESP32) || defined(ARDUINO_ESP8266_NODEMCU) 
+      uint32_t OutputABitMask;
+      uint32_t OutputBBitMask;
       volatile uint32_t * OutputAPortRegister;
       volatile uint32_t * OutputBPortRegister;
     #else
       volatile uint8_t * OutputAPortRegister;
       volatile uint8_t * OutputBPortRegister;
+      uint8_t OutputABitMask;
+      uint8_t OutputBBitMask;
     #endif
 
     struct OutputBuffer {
