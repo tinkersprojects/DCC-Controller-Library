@@ -3,6 +3,11 @@
 
 /**************************** SET UP ****************************/
 
+Dcc::Dcc(void (*CallBack)(uint8_t pinState))
+{
+  runCallback = CallBack;
+}
+
 Dcc::Dcc(uint8_t _OutputA, uint8_t _OutputB)
 {
   OutputA = _OutputA;
@@ -154,6 +159,12 @@ void Dcc::writeBit(uint8_t bit)
 
 void Dcc::writeOutput(uint8_t pinState)
 {
+  if(runCallback != NULL)
+  {
+    runCallback(pinState);
+    return;
+  }
+
   if (pinState == LOW)
   {
     *OutputBPortRegister &= ~OutputBBitMask;

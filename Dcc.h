@@ -5,9 +5,13 @@
   #define DCC_Buffer_size 20
 #endif
 
+
+typedef void (*CallbackFunction) (uint8_t pinState);
+
 class Dcc
 {
   public:
+    Dcc(void (*CallBack)(uint8_t pinState));
     Dcc(uint8_t _OutputA, uint8_t _OutputB);
     void begin();
 
@@ -21,6 +25,7 @@ class Dcc
 
     uint8_t OutputA;
     uint8_t OutputB;
+    CallbackFunction runCallback = NULL;
 
     #if defined(ESP8266) || defined(ESP32) || defined(ARDUINO_ESP8266_NODEMCU) 
       uint32_t OutputABitMask;
